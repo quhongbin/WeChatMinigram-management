@@ -28,25 +28,25 @@
     <nav class="flex-1 overflow-y-auto py-4">
       <ul>
         <li v-for="item in menuItems" :key="item.id">
-          <a 
-            href="#" 
-            @click="$emit('set-active-menu', item.id)"
+          <router-link 
+            :to="item.route"
+            @click="$emit('toggle-sidebar')"
             :class="['block px-4 py-3 text-sm flex items-center', 
             activeMenu === item.id ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white']">
             <i :class="['mr-3 w-5 text-center', item.icon]"></i>
             <span>{{ item.name }}</span>
             <span v-if="item.badge" class="ml-auto bg-red-500 text-xs rounded-full px-2 py-1">{{ item.badge }}</span>
-          </a>
+          </router-link>
         </li>
       </ul>
     </nav>
     
     <!-- 底部区域 -->
     <div class="p-4 border-t border-gray-700">
-      <a href="#" class="flex items-center text-gray-300 hover:text-white text-sm">
+      <router-link to="/settings" class="flex items-center text-gray-300 hover:text-white text-sm">
         <i class="fas fa-cog mr-3"></i>
         <span>系统设置</span>
-      </a>
+      </router-link>
     </div>
   </aside>
 </template>
@@ -68,6 +68,6 @@ export default {
       required: true
     }
   },
-  emits: ['toggle-sidebar', 'set-active-menu']
+  emits: ['toggle-sidebar']
 }
 </script>
