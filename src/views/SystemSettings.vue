@@ -158,40 +158,28 @@
     </div>
   </template>
   
-  <script>
-  import { ref } from 'vue'
-  
-  export default {
-    name: 'SystemSettings',
-    setup() {
-      const activeSetting = ref(1)
-      const activeColor = ref(1)
-      
-      // 设置菜单
-      const settingsMenu = ref([
-        { id: 1, name: '基本设置', icon: 'fas fa-cog' },
-        { id: 2, name: '安全设置', icon: 'fas fa-shield-alt' },
-        { id: 3, name: '通知设置', icon: 'fas fa-bell' },
-        { id: 4, name: '外观设置', icon: 'fas fa-palette' },
-        { id: 5, name: '备份与恢复', icon: 'fas fa-database' },
-        { id: 6, name: '关于系统', icon: 'fas fa-info-circle' },
-      ])
-      
-      // 主题颜色
-      const themeColors = ref([
-        { id: 1, name: '蓝色', value: '#3b82f6' },
-        { id: 2, name: '绿色', value: '#10b981' },
-        { id: 3, name: '紫色', value: '#8b5cf6' },
-        { id: 4, name: '红色', value: '#ef4444' },
-        { id: 5, name: '橙色', value: '#f59e0b' },
-      ])
-      
-      return {
-        activeSetting,
-        activeColor,
-        settingsMenu,
-        themeColors
-      }
-    }
-  }
-  </script>
+<script setup lang="ts">
+import { reactive, ref } from 'vue'
+const name='SystemSettings'
+const activeSetting = ref(1)
+const activeColor = ref(1)
+
+// 设置菜单
+const settingsMenu = reactive([
+    { id: 1, name: '基本设置', icon: 'fas fa-cog' },
+    { id: 2, name: '安全设置', icon: 'fas fa-shield-alt' },
+    { id: 3, name: '通知设置', icon: 'fas fa-bell' },
+    { id: 4, name: '外观设置', icon: 'fas fa-palette' },
+    { id: 5, name: '备份与恢复', icon: 'fas fa-database' },
+    { id: 6, name: '关于系统', icon: 'fas fa-info-circle' },
+])
+
+// 主题颜色
+const themeColors = reactive([
+    { id: 1, name: '蓝色', value: '#3b82f6' },
+    { id: 2, name: '绿色', value: '#10b981' },
+    { id: 3, name: '紫色', value: '#8b5cf6' },
+    { id: 4, name: '红色', value: '#ef4444' },
+    { id: 5, name: '橙色', value: '#f59e0b' },
+])
+</script>

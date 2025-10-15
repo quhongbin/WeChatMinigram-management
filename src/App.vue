@@ -59,8 +59,8 @@ export default {
     const menuItems = ref([
       { id: 1, name: '仪表盘', icon: 'fas fa-tachometer-alt', route: '/dashboard' },
       { id: 2, name: '用户管理', icon: 'fas fa-users', route: '/users' },
-      { id: 3, name: '订单管理', icon: 'fas fa-shopping-cart', route: '/orders' },
-      { id: 4, name: '产品管理', icon: 'fas fa-box', route: '/products' },
+      { id: 3, name: '文章管理', icon: 'fas fa-shopping-cart', route: '/posts' },
+      // { id: 4, name: '产品管理', icon: 'fas fa-box', route: '/products' },
       { id: 5, name: '数据分析', icon: 'fas fa-chart-bar', route: '/analytics' },
       { id: 6, name: '消息中心', icon: 'fas fa-comments', badge: 5, route: '/messages' },
       { id: 7, name: '系统设置', icon: 'fas fa-cog', route: '/settings' },
@@ -112,7 +112,6 @@ export default {
 </script>
 
 <style>
-@import "tailwindcss";
 /* 全局样式 */
 .sidebar-transition {
   transition: all 0.3s ease;

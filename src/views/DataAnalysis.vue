@@ -59,24 +59,16 @@
     </div>
   </template>
   
-  <script>
-  import { ref } from 'vue'
-  
-  export default {
-    name: 'DataAnalysis',
-    setup() {
-      // 指标数据
-      const metrics = ref([
-        { id: 1, name: '销售额', currentMonth: '¥84,259', lastMonth: '¥77,120', growth: 9.3 },
-        { id: 2, name: '订单数', currentMonth: '3,284', lastMonth: '3,062', growth: 7.2 },
-        { id: 3, name: '用户数', currentMonth: '12,584', lastMonth: '11,185', growth: 12.5 },
-        { id: 4, name: '平均订单价值', currentMonth: '¥256.63', lastMonth: '¥251.89', growth: 1.9 },
-        { id: 5, name: '转化率', currentMonth: '4.2%', lastMonth: '3.9%', growth: 7.7 },
-      ])
-      
-      return {
-        metrics
-      }
-    }
-  }
-  </script>
+<script setup lang="ts">
+import { reactive, ref } from 'vue'
+
+const name=ref ( 'DataAnalysis' )
+// 指标数据
+const metrics = reactive([
+    { id: 1, name: '销售额', currentMonth: '¥84,259', lastMonth: '¥77,120', growth: 9.3 },
+    { id: 2, name: '订单数', currentMonth: '3,284', lastMonth: '3,062', growth: 7.2 },
+    { id: 3, name: '用户数', currentMonth: '12,584', lastMonth: '11,185', growth: 12.5 },
+    { id: 4, name: '平均订单价值', currentMonth: '¥256.63', lastMonth: '¥251.89', growth: 1.9 },
+    { id: 5, name: '转化率', currentMonth: '4.2%', lastMonth: '3.9%', growth: 7.7 },
+])
+</script>

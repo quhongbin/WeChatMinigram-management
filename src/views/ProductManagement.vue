@@ -39,61 +39,54 @@
     </div>
   </template>
   
-  <script>
-  import { ref } from 'vue'
+<script setup lang="ts">
+import { reactive, ref } from 'vue'
   
-  export default {
-    name: 'ProductManagement',
-    setup() {
-      // 产品数据
-      const products = ref([
-        { 
-          id: 1, 
-          name: '智能手机', 
-          description: '高性能智能手机，配备最新处理器和摄像头', 
-          price: '¥3,299', 
-          category: '电子'
-        },
-        { 
-          id: 2, 
-          name: '笔记本电脑', 
-          description: '轻薄便携，适合商务和日常使用', 
-          price: '¥5,999', 
-          category: '电子'
-        },
-        { 
-          id: 3, 
-          name: '无线耳机', 
-          description: '高品质音效，长时间续航', 
-          price: '¥899', 
-          category: '配件'
-        },
-        { 
-          id: 4, 
-          name: '智能手表', 
-          description: '健康监测，运动追踪', 
-          price: '¥1,299', 
-          category: '穿戴'
-        },
-        { 
-          id: 5, 
-          name: '平板电脑', 
-          description: '大屏幕，适合娱乐和学习', 
-          price: '¥2,599', 
-          category: '电子'
-        },
-        { 
-          id: 6, 
-          name: '蓝牙音箱', 
-          description: '360度环绕音效，便携设计', 
-          price: '¥499', 
-          category: '配件'
-        },
-      ])
-      
-      return {
-        products
-      }
-    }
-  }
-  </script>
+const name=ref( 'ProductManagement' )
+// 产品数据
+const products = reactive([
+{ 
+    id: 1, 
+    name: '智能手机', 
+    description: '高性能智能手机，配备最新处理器和摄像头', 
+    price: '¥3,299', 
+    category: '电子'
+},
+{ 
+    id: 2, 
+    name: '笔记本电脑', 
+    description: '轻薄便携，适合商务和日常使用', 
+    price: '¥5,999', 
+    category: '电子'
+},
+{ 
+    id: 3, 
+    name: '无线耳机', 
+    description: '高品质音效，长时间续航', 
+    price: '¥899', 
+    category: '配件'
+},
+{ 
+    id: 4, 
+    name: '智能手表', 
+    description: '健康监测，运动追踪', 
+    price: '¥1,299', 
+    category: '穿戴'
+},
+{ 
+    id: 5, 
+    name: '平板电脑', 
+    description: '大屏幕，适合娱乐和学习', 
+    price: '¥2,599', 
+    category: '电子'
+},
+{ 
+    id: 6, 
+    name: '蓝牙音箱', 
+    description: '360度环绕音效，便携设计', 
+    price: '¥499', 
+    category: '配件'
+},
+])
+
+</script>

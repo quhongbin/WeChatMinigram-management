@@ -110,24 +110,17 @@
     </div>
   </template>
   
-  <script>
-  import { ref } from 'vue'
+<script>
+import { reactive, ref } from 'vue'
   
-  export default {
-    name: 'OrderManagement',
-    setup() {
-      // 订单数据
-      const orders = ref([
-        { id: 1001, customer: '张三', amount: '¥1,280.00', status: '已完成', date: '2023-07-20' },
-        { id: 1002, customer: '李四', amount: '¥2,450.00', status: '处理中', date: '2023-07-19' },
-        { id: 1003, customer: '王五', amount: '¥890.00', status: '已完成', date: '2023-07-18' },
-        { id: 1004, customer: '赵六', amount: '¥1,560.00', status: '已取消', date: '2023-07-17' },
-        { id: 1005, customer: '钱七', amount: '¥3,200.00', status: '处理中', date: '2023-07-16' },
-      ])
-      
-      return {
-        orders
-      }
-    }
-  }
-  </script>
+const name=ref( 'OrderManagement' )
+    // 订单数据
+const orders = reactive([
+    { id: 1001, customer: '张三', amount: '¥1,280.00', status: '已完成', date: '2023-07-20' },
+    { id: 1002, customer: '李四', amount: '¥2,450.00', status: '处理中', date: '2023-07-19' },
+    { id: 1003, customer: '王五', amount: '¥890.00', status: '已完成', date: '2023-07-18' },
+    { id: 1004, customer: '赵六', amount: '¥1,560.00', status: '已取消', date: '2023-07-17' },
+    { id: 1005, customer: '钱七', amount: '¥3,200.00', status: '处理中', date: '2023-07-16' },
+])
+    
+</script>

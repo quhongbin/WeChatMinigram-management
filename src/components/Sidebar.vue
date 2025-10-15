@@ -19,7 +19,7 @@
         </div>
         <div class="ml-3">
           <p class="text-sm font-medium">管理员</p>
-          <p class="text-xs text-gray-400">admin@example.com</p>
+          <p class="text-xs text-gray-400 ">admin@example.com</p>
         </div>
       </div>
     </div>
