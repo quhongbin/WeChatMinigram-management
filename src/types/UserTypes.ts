@@ -1,10 +1,12 @@
+import type { number } from "echarts/core"
+
 interface FilteredUser {
-  id: number
-  username: string
-  name: string
-  email: string
-  role: string
-  status: string
+      id: number,
+      username: string,
+      email: string,
+      status: string,
+      role: string,
+      lastLogin: string
 }
 
 export type { FilteredUser };

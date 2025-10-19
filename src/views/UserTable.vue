@@ -36,8 +36,12 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ user.role }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ user.lastLogin }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <a href="#" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 mr-3">编辑</a>
-              <a href="#" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">删除</a>
+              <a href="#" 
+                 class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 mr-3"
+                 v-on:click="editUser()">编辑</a>
+              <a href="#" 
+                 class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
+                 v-on:click="deleteUser(user.id,user.name)">删除</a>
             </td>
           </tr>
         </tbody>
@@ -57,14 +61,28 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'UserTable',
-  props: {
-    users: {
-      type: Array,
-      required: true
-    }
+<script setup lang="ts">
+import axios from 'axios';
+import { type FilteredUser } from '../types/UserTypes';
+
+const users=defineProps(['users'])
+const name= 'UserTable'
+
+function editUser():void{
+  //获取当前用户数据并传递给编辑弹窗
+}
+
+function deleteUser(user_id:number,username:string):void{
+  if (confirm(`确认删除用户${username}吗？`)) {
+    axios.delete("http://localhost:3000/api/users/:id",
+    {
+      params: { id: user_id }
+    })
+    .then((res) =>{
+      if (res.data.success) {
+          () => { ElMessage('This is a message.') }
+      }
+    })
   }
 }
 </script>

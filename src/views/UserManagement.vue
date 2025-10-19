@@ -74,12 +74,12 @@ import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import UserTable from '../views/UserTable.vue'
 import UserManagementAddUser from './UserManagementAddUser.vue'
-import { type FilteredUser } from '../types/UserTypes'
 
 const name = 'UserManagement'
 
 // 用户数据
-const FetchedUsers = ref([])  
+import {type FilteredUser} from '../types/UserTypes'
+const FetchedUsers = ref<FilteredUser[]>([])  
 
 // 筛选条件
 const searchText = ref('')
@@ -94,8 +94,7 @@ const filteredUsers = computed(() => {
   return FetchedUsers.value.filter((user:FilteredUser) => {
     // 用户名筛选
     const matchesText = !searchText.value || 
-      (user.username && user.username.toLowerCase().includes(searchText.value.toLowerCase())) ||
-      (user.name && user.name.toLowerCase().includes(searchText.value.toLowerCase()))
+      (user.username && user.username.toLowerCase().includes(searchText.value.toLowerCase()))
     
     // 状态筛选
     const matchesStatus = !selectedStatus.value || user.status === selectedStatus.value
@@ -205,6 +204,6 @@ function filterUsers() {
 }
 
 onMounted(()=>{
-  // getUsers()
+  getUsers()
 })
 </script>
