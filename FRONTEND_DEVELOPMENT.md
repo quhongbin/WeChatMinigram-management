@@ -21,7 +21,6 @@ manage/
 │   ├── components/          # 公共组件
 │   │   ├── Header.vue       # 头部导航组件
 │   │   ├── Sidebar.vue      # 侧边栏导航组件
-│   │   ├── UserTable.vue    # 用户表格组件（可复用）
 │   │   ├── StatCard.vue     # 统计卡片组件
 │   │   └── RecentActivity.vue # 最近活动组件
 │   ├── views/               # 页面视图组件
@@ -32,7 +31,8 @@ manage/
 │   │   ├── DataAnalysis.vue # 数据分析页面
 │   │   ├── MessageCenter.vue # 消息中心页面
 │   │   ├── SystemSettings.vue # 系统设置页面
-│   │   └── UserTableAddUser.vue # 添加用户弹窗组件
+│   │   ├── UserTable.vue    # 用户表格组件
+│   │   └── UserManagementAddUser.vue # 添加用户弹窗组件
 │   ├── types/               # TypeScript类型定义
 │   │   ├── UserTypes.ts     # 用户相关类型接口
 │   │   └── PostTypes.ts     # 文章相关类型接口
@@ -55,10 +55,9 @@ manage/
 
 ### 安装步骤
 
-1. **克隆项目**
+1. **进入项目目录**
 ```bash
-git clone https://github.com/quhongbin/WeChat
-cd zhinong/manage
+cd manage
 ```
 
 2. **安装依赖**
@@ -81,16 +80,15 @@ npm run dev
 ### 1. 用户管理模块
 
 **功能特性**
-- 用户列表展示（支持分页）
+- 用户列表展示
 - 用户信息筛选（用户名、状态、角色）
 - 添加新用户（弹窗形式）
-- 编辑用户信息
 - 删除用户（确认对话框）
 
 **相关组件**
 - `UserManagement.vue` - 主页面容器
-- `UserTable.vue` - 可复用用户表格组件
-- `UserTableAddUser.vue` - 添加用户弹窗
+- `UserTable.vue` - 用户表格组件
+- `UserManagementAddUser.vue` - 添加用户弹窗
 
 **数据流**
 ```typescript
@@ -100,12 +98,11 @@ const selectedStatus = ref('')
 const selectedRole = ref('')
 
 // 筛选后的用户数据（计算属性）
-const filteredUsers = computed(() => {  
+const filteredUsers = computed(() => {
   return FetchedUsers.value.filter((user: FilteredUser) => {
     // 用户名模糊匹配
     const matchesText = !searchText.value || 
-      (user.username && user.username.toLowerCase().includes(searchText.value.toLowerCase())) ||
-      (user.name && user.name.toLowerCase().includes(searchText.value.toLowerCase()))
+      (user.username && user.username.toLowerCase().includes(searchText.value.toLowerCase()))
     
     // 状态筛选
     const matchesStatus = !selectedStatus.value || user.status === selectedStatus.value
@@ -152,15 +149,15 @@ const filteredUsers = computed(() => {
 
 ## 数据模型
 
-### 用户模型 (User)
+### 用户模型 (FilteredUser)
 ```typescript
-interface User {
+interface FilteredUser {
   id: number
   username: string      // 用户名
-  name: string         // 姓名
   email: string        // 邮箱
   role: string         // 角色: admin(管理员), editor(编辑), viewer(查看者)
   status: string       // 状态: active(活跃), inactive(非活跃)
+  lastLogin: string   // 最后登录时间
 }
 ```
 
@@ -235,7 +232,7 @@ import axios from 'axios'
 // 用户管理相关 API
 async function getUsers() {
   try {
-    const response = await axios.get('http://server:3000/api/users')
+    const response = await axios.get('http://localhost:3000/api/users')
     FetchedUsers.value = response.data.data
   } catch (error) {
     console.error('Error fetching users:', error)
@@ -308,8 +305,8 @@ export default defineConfig({
 - Vue 组件: `PascalCase.vue`
 - TypeScript 文件: `camelCase.ts`
 - 工具函数: `camelCase.ts`
-- 路由试图views: `PascalCase.vue`
-- 路由试图的子视图：`路由试图的文件名+功能简称`
+- 路由视图: `PascalCase.vue`
+- 路由视图的子视图：`路由视图的文件名+功能简称`
 
 ### 2. 组件开发规范
 
@@ -408,7 +405,6 @@ server {
 ### 浏览器扩展
 
 - **Vue Devtools** - Vue 开发者工具
-- **Redux DevTools** - 状态管理调试
 
 ## 常见问题
 
@@ -458,26 +454,6 @@ npx vue-tsc --noEmit
 ### 3. 缓存策略
 - 合理配置 HTTP 缓存头
 - 使用 Service Worker 实现离线缓存
-
-## 测试策略
-
-### 单元测试
-```bash
-# 安装测试框架
-npm install --save-dev @vue/test-utils vitest
-
-# 运行测试
-npm test
-```
-
-### E2E 测试
-```bash
-# 安装 Cypress
-npm install --save-dev cypress
-
-# 运行 E2E 测试
-npm run test:e2e
-```
 
 ---
 

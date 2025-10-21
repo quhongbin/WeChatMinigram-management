@@ -15,14 +15,14 @@
           </tr>
         </thead>
         <tbody class="bg-white dark:bg-gray-700 divide-y divide-gray-200 dark:divide-gray-600">
-          <tr v-for="user in users" :key="user.id">
+          <tr v-for="user in props.users" :key="user.id">
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="flex items-center">
                 <div class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-                  {{ user.name.charAt(0) }}
+                  {{ user.username.charAt(0) }}
                 </div>
                 <div class="ml-4">
-                  <div class="text-sm font-medium text-gray-900 dark:text-white">{{ user.name }}</div>
+                  <div class="text-sm font-medium text-gray-900 dark:text-white">{{ user.username }}</div>
                   <div class="text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</div>
                 </div>
               </div>
@@ -41,7 +41,7 @@
                  v-on:click="editUser()">编辑</a>
               <a href="#" 
                  class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
-                 v-on:click="deleteUser(user.id,user.name)">删除</a>
+                 v-on:click="deleteUser(user.id,user.username)">删除</a>
             </td>
           </tr>
         </tbody>
@@ -63,9 +63,20 @@
 
 <script setup lang="ts">
 import axios from 'axios';
+import { onMounted, defineProps,watch } from 'vue';
 import { type FilteredUser } from '../types/UserTypes';
+import { ElMessage } from 'element-plus';
+import { API_ENDPOINTS, getApiUrl } from '../config/api';
 
-const users=defineProps(['users'])
+
+
+// 正确定义props
+interface Props {
+  users: Array<FilteredUser>
+  getUsers: () => Promise<void>
+}
+
+const props = defineProps<Props>()
 const name= 'UserTable'
 
 function editUser():void{
@@ -74,15 +85,14 @@ function editUser():void{
 
 function deleteUser(user_id:number,username:string):void{
   if (confirm(`确认删除用户${username}吗？`)) {
-    axios.delete("http://localhost:3000/api/users/:id",
-    {
-      params: { id: user_id }
-    })
+    axios.delete(getApiUrl(API_ENDPOINTS.USERS.DELETE(user_id)))
     .then((res) =>{
       if (res.data.success) {
-          () => { ElMessage('This is a message.') }
+        ElMessage({message: '删除成功',type: 'success'})
       }
+      props.getUsers()
     })
   }
 }
+
 </script>

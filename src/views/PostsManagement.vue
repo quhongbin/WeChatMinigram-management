@@ -103,8 +103,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <!-- <a href="#" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:tex t-blue-300 mr-3">查看</a> -->
-                  <a href="#" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
-                   @click="deletePost(post.id)">删除</a>
+                  <el-button type="danger" size="mini" @click="deletePost(post.id)">删除</el-button>
                 </td>
               </tr>
             </tbody>
@@ -125,9 +124,14 @@
 import { reactive, ref, onMounted } from 'vue'
 import axios from 'axios'
 import PostsManagementCreatePosts from './PostsManagementCreatePosts.vue'
+import { ElMessage } from 'element-plus'
+import { API_ENDPOINTS, getApiUrl } from '../config/api'
   
 const name = ref('PostsManagement')
 
+const open= () => {
+  ElMessage('This is a message.')
+}
 // 显示创建文章弹窗
 const showCreatePost = ref(false)
 
@@ -147,7 +151,7 @@ let postsCounts = ref(0);
 */
 async function getPosts() {
   try {
-    const response = await axios.get('http://localhost:3000/api/posts/all');
+    const response = await axios.get(getApiUrl(API_ENDPOINTS.POSTS.GET_ALL));
     posts.value = response.data.data;
   } catch (error) {
     console.error('获取文章列表失败:', error);
@@ -156,7 +160,7 @@ async function getPosts() {
 /* 获取文章数量 */
 async function getPostsCounts() {
   try {
-    const response = await axios.get('http://localhost:3000/api/posts/count');
+    const response = await axios.get(getApiUrl(API_ENDPOINTS.POSTS.COUNT));
     postsCounts.value = response.data.data;
   } catch (error) {
     console.error('获取文章数量失败:', error);
@@ -171,7 +175,10 @@ async function deletePost(id:number) {
     if (!confirmDelete) {
       return;
     }
-    await axios.delete(`/api/posts/${id}`);
+    const response = await axios.delete(getApiUrl(API_ENDPOINTS.POSTS.DELETE(id)));
+    if (response.data.success) {
+        ElMessage.success('文章删除成功');
+    }
     // 删除成功后，刷新文章列表
     getPosts();
   } catch (error) {

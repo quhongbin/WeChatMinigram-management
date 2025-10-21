@@ -58,7 +58,7 @@
     </div>
       
       <!-- 用户表格 -->
-      <UserTable :users="filteredUsers" />
+      <UserTable :users="filteredUsers" :getUsers="getUsers" />
       
       <!-- 添加用户弹窗 -->
       <UserManagementAddUser 
@@ -74,6 +74,7 @@ import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import UserTable from '../views/UserTable.vue'
 import UserManagementAddUser from './UserManagementAddUser.vue'
+import { API_ENDPOINTS, getApiUrl } from '../config/api'
 
 const name = 'UserManagement'
 
@@ -101,7 +102,7 @@ const filteredUsers = computed(() => {
     
     // 角色筛选
     const matchesRole = !selectedRole.value || user.role === selectedRole.value
-    
+    console.log(matchesText, matchesStatus, matchesRole)
     return matchesText && matchesStatus && matchesRole
   })
 })
@@ -112,7 +113,7 @@ const filteredUsers = computed(() => {
  */
 async function getUsers() {
   try {
-    const response = await axios.get('http://localhost:3000/api/users');
+    const response = await axios.get(getApiUrl(API_ENDPOINTS.USERS.GET_ALL));
     FetchedUsers.value = response.data.data
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -130,7 +131,7 @@ async function getUsers() {
  */
 async function getUserById(id:number) {
   try {
-    const response = await axios.get(`/api/users/${id}`);
+    const response = await axios.get(getApiUrl(API_ENDPOINTS.USERS.GET_BY_ID(id)));
     FetchedUsers.value = response.data.data
   } catch (error) {
    console.error('Error deleting user:', error);
@@ -149,7 +150,7 @@ async function getUserById(id:number) {
  */
 async function delUserById(id:number) {
   try {
-    const response = await axios.delete(`/api/users/${id}`);
+    const response = await axios.delete(getApiUrl(API_ENDPOINTS.USERS.DELETE(id)));
     FetchedUsers.value = response.data.data
   } catch (error) {
     console.error('Error deleting user:', error);
@@ -168,7 +169,7 @@ async function delUserById(id:number) {
  */
 async function createUser(user:object) {
   try {
-    const response = await axios.post('/api/users', user);
+    const response = await axios.post(getApiUrl(API_ENDPOINTS.USERS.CREATE), user);
     alert(response.data.message)
   } catch (error) {
     console.error('Error creating user:', error);
