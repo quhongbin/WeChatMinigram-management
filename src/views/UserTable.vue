@@ -79,7 +79,7 @@ interface Props {
 const props = defineProps<Props>()
 const name= 'UserTable'
 
-function editUser():void{
+function editUserh():void{
   //获取当前用户数据并传递给编辑弹窗
 }
 
