@@ -104,6 +104,7 @@
 import { ref, reactive } from 'vue'
 import axios from 'axios'
 import { API_ENDPOINTS, getApiUrl } from '../config/api'
+import {ElMessage,ElMessageBox, type Action} from 'element-plus'
 
 // 定义组件属性
 interface Props {
@@ -140,7 +141,15 @@ const handleSubmit = async () => {
     
     if (response.data.success) {
       // 显示成功消息
-      alert('用户添加成功')
+      ElMessageBox.alert('add user successfully! the default password is 123456','INFO',{
+        confirmButtonText:"OK",
+        callback: (action:Action)=>{
+          ElMessage({
+            type:"info",
+            message:`action:${action}`
+          })
+        }
+      })
       
       // 调用成功回调
       if (props.onSuccess) {
@@ -149,8 +158,6 @@ const handleSubmit = async () => {
       
       // 关闭弹窗
       handleClose()
-    } else {
-      alert('添加用户失败：' + response.data.message)
     }
   } catch (error: any) {
     console.error('Error creating user:', error)

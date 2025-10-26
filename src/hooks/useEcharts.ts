@@ -1,4 +1,4 @@
-import { ref,reactive, onUnmounted, onMounted, nextTick } from "vue"
+import { reactive, ref, onMounted, onUnmounted, nextTick } from 'vue'
 import * as echarts from 'echarts'
 const name = ref('Dashboard')
 const chartRef = ref(null)
@@ -114,7 +114,8 @@ const updateChart = () => {
     
     const option = {
     tooltip: {
-        trigger: 'axis',
+        show:true,
+        trigger: 'none',
         axisPointer: {
         type: 'cross',
         label: {
@@ -148,9 +149,9 @@ const updateChart = () => {
             if (timeRange.value === 'week') {
             return date.getDate() + '日'
             } else if (timeRange.value === 'month') {
-            return date.getMonth() + 1 + '/' + date.getDate()
+            return date.getMonth() + 1 + '月' + date.getDate()+ '日'
             } else {
-            return date.getMonth() + 1 + '月'
+            return date.getMonth() + 1 + ''
             }
         }
         }
@@ -204,35 +205,6 @@ const changeTimeRange = (range:string) => {
     updateChart()
 }
 
-// 模拟实时数据更新
-const updateInterval = ref()
-
-onMounted(() => {
-    nextTick(() => {
-    initChart()
-    
-    // 每5秒更新一次数据，模拟实时渲染
-    updateInterval.value = setInterval(() => {
-        updateChart()
-    }, 5000)
-    })
-})
-
-onUnmounted(() => {
-    if (updateInterval.value) {
-    clearInterval(updateInterval.value)
-    }
-    if (chartInstance.value) {
-    chartInstance.value.dispose()
-    }
-})
-
-// 监听窗口大小变化
-window.addEventListener('resize', () => {
-    if (chartInstance.value) {
-    chartInstance.value.resize()
-    }
-})
 
 export {
     name,
@@ -240,5 +212,8 @@ export {
     recentActivities,
     chartRef,
     timeRange,
-    changeTimeRange
+    chartInstance,
+    changeTimeRange,
+    initChart,
+    updateChart,
 }

@@ -25,7 +25,6 @@
             <input
               v-model="formData.title"
               type="text"
-              required
               class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
               placeholder="请输入文章标题"
             >
@@ -76,7 +75,6 @@
                       accept=".md,.markdown" 
                       @change="handleFileUpload"
                       class="sr-only"
-                      required
                     >
                   </label>
                   <p class="pl-1">或拖拽文件到这里</p>
@@ -134,6 +132,8 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import axios from 'axios'
+import {ElMessage,ElMessageBox} from 'element-plus'
+
 
 // 定义事件
 const emit = defineEmits<{
@@ -164,7 +164,9 @@ const handleFileUpload = (event: Event) => {
     
     // 检查文件类型
     if (!file.name.toLowerCase().endsWith('.md') && !file.name.toLowerCase().endsWith('.markdown')) {
-      alert('请上传 Markdown 文件 (.md 或 .markdown 格式)')
+      ElMessageBox.alert(`Bad file postsuffix: ${file.name.split('.')[1]}`,'Error file',{
+        confirmButtonText:'confirm',
+      })
       target.value = ''
       return
     }
@@ -195,12 +197,16 @@ const handleFileUpload = (event: Event) => {
 const handleSubmit = async () => {
   // 表单验证
   if (!formData.title.trim()) {
-    alert('请输入文章标题')
+    ElMessageBox.alert('请输入文章标题','Bad Input',{
+      confirmButtonText:'confirm'
+    })
     return
   }
   
   if (!formData.file) {
-    alert('请选择要上传的 Markdown 文件')
+    ElMessageBox.alert('请选择要上传的 Markdown 文件','Bad Input',{
+      confirmButtonText:'confirm'
+    })
     return
   }
   
@@ -215,7 +221,7 @@ const handleSubmit = async () => {
     formDataToSend.append('file', formData.file)
     
     // 发送创建请求
-    const response = await axios.post('/api/posts', formDataToSend, {
+    const response = await axios.post('http://localhost:3000/api/posts', formDataToSend, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

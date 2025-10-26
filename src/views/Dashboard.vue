@@ -36,9 +36,8 @@
     </div>
   </template>
   
-<script>
-import { reactive, ref, onMounted, onUnmounted, nextTick } from 'vue'
-import * as echarts from 'echarts'
+<script setup lang="ts">
+import {ref,onMounted,onUnmounted,nextTick} from 'vue'
 import StatCard from '../components/StatCard.vue'
 import RecentActivity from '../components/RecentActivity.vue'
 import {
@@ -47,13 +46,39 @@ import {
     recentActivities,
     chartRef,
     timeRange,
-    changeTimeRange
+    changeTimeRange,
+    chartInstance,
+    initChart,
+    updateChart,
 } from '../hooks/useEcharts'
 
-export default {
-  name: 'Dashboard',
-  components: {
-    StatCard,
-    RecentActivity
-  },
-}</script>
+// 模拟实时数据更新
+const updateInterval = ref()
+
+onMounted(() => {
+    nextTick(() => {
+        initChart()
+    
+    // 每5秒更新一次数据，模拟实时渲染
+    updateInterval.value = setInterval(() => {
+        updateChart()
+    }, 5000)
+    })
+})
+
+onUnmounted(() => {
+    if (updateInterval.value) {
+    clearInterval(updateInterval.value)
+    }
+    if (chartInstance.value) {
+    chartInstance.value.dispose()
+    }
+})
+
+// 监听窗口大小变化
+window.addEventListener('resize', () => {
+    if (chartInstance.value) {
+    chartInstance.value.resize()
+    }
+})
+</script>
