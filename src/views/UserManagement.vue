@@ -75,6 +75,7 @@ import axios from 'axios'
 import UserTable from '../views/UserTable.vue'
 import UserManagementAddUser from './UserManagementAddUser.vue'
 import { API_ENDPOINTS, getApiUrl } from '../config/api'
+import {ElMessage} from 'element-plus'
 
 const name = 'UserManagement'
 
@@ -118,9 +119,9 @@ async function getUsers() {
   } catch (error) {
     console.error('Error fetching users:', error);
     if (error instanceof Error) {
-      alert('Error fetching users:' + error.message);
+      ElMessage.error('Error fetching users:' + error.message);
     } else {
-      alert('Error fetching users: An unknown error occurred');
+      ElMessage.error('Error fetching users: An unknown error occurred');
     }
   }
 }
@@ -170,13 +171,13 @@ async function delUserById(id:number) {
 async function createUser(user:object) {
   try {
     const response = await axios.post(getApiUrl(API_ENDPOINTS.USERS.CREATE), user);
-    alert(response.data.message)
+    ElMessage.success(response.data.message)
   } catch (error) {
     console.error('Error creating user:', error);
     if (error instanceof Error) {
-      alert('Error creating user:' + error.message);
+      ElMessage.error('Error creating user:' + error.message);
     } else {
-      alert('Error creating user: An unknown error occurred');
+      ElMessage.error('Error creating user: An unknown error occurred');
     }
   }
 }

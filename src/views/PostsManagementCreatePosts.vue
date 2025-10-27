@@ -25,7 +25,6 @@
             <input
               v-model="formData.title"
               type="text"
-              required
               class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
               placeholder="请输入文章标题"
             >
@@ -76,7 +75,6 @@
                       accept=".md,.markdown" 
                       @change="handleFileUpload"
                       class="sr-only"
-                      required
                     >
                   </label>
                   <p class="pl-1">或拖拽文件到这里</p>
@@ -134,11 +132,13 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import axios from 'axios'
+import {ElMessage,ElMessageBox} from 'element-plus'
+
 
 // 定义事件
 const emit = defineEmits<{
-  close: []
-  success: []
+  close: () => void
+  postCreated: () => void
 }>()
 
 // 表单数据
@@ -164,14 +164,18 @@ const handleFileUpload = (event: Event) => {
     
     // 检查文件类型
     if (!file.name.toLowerCase().endsWith('.md') && !file.name.toLowerCase().endsWith('.markdown')) {
-      alert('请上传 Markdown 文件 (.md 或 .markdown 格式)')
+      ElMessageBox.alert(`Bad file postsuffix: ${file.name.split('.')[1]}`,'Error file',{
+        confirmButtonText:'confirm',
+      })
       target.value = ''
       return
     }
     
     // 检查文件大小（限制为 10MB）
     if (file.size > 10 * 1024 * 1024) {
-      alert('文件大小不能超过 10MB')
+      ElMessageBox.alert('文件大小不能超过 10MB','Error file',{
+        confirmButtonText:'confirm',
+      })
       target.value = ''
       return
     }
@@ -195,12 +199,16 @@ const handleFileUpload = (event: Event) => {
 const handleSubmit = async () => {
   // 表单验证
   if (!formData.title.trim()) {
-    alert('请输入文章标题')
+    ElMessageBox.alert('请输入文章标题','Bad Input',{
+      confirmButtonText:'confirm'
+    })
     return
   }
   
   if (!formData.file) {
-    alert('请选择要上传的 Markdown 文件')
+    ElMessageBox.alert('请选择要上传的 Markdown 文件','Bad Input',{
+      confirmButtonText:'confirm'
+    })
     return
   }
   
@@ -209,33 +217,28 @@ const handleSubmit = async () => {
   try {
     // 创建 FormData 对象
     const formDataToSend = new FormData()
-    formDataToSend.append('title', formData.title)
-    formDataToSend.append('tags', formData.tags)
-    formDataToSend.append('status', formData.status)
-    formDataToSend.append('file', formData.file)
+    formDataToSend.set('title', formData.title)
+    formDataToSend.set('tags', formData.tags)
+    formDataToSend.set('status', formData.status)
+    formDataToSend.set('file', formData.file)
     
     // 发送创建请求
-    const response = await axios.post('/api/posts', formDataToSend, {
+    const response = await axios.post('http://localhost:3000/api/posts/create', formDataToSend, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     })
     
-    if (response.data.code === 201) {
-      alert('文章创建成功！')
+    if (response.data.success) {
+      ElMessage.success('文章创建成功！')
       emit('success')
       emit('close')
-    } else {
-      throw new Error(response.data.message || '创建失败')
     }
     
   } catch (error) {
-    console.error('创建文章失败:', error)
-    if (error instanceof Error) {
-      alert('创建文章失败: ' + error.message)
-    } else {
-      alert('创建文章失败: 网络错误')
-    }
+    
+    ElMessage.error(`提交失败: ${error.message}`)
+
   } finally {
     isSubmitting.value = false
   }

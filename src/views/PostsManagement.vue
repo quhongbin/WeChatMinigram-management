@@ -124,7 +124,7 @@
 import { reactive, ref, onMounted } from 'vue'
 import axios from 'axios'
 import PostsManagementCreatePosts from './PostsManagementCreatePosts.vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { API_ENDPOINTS, getApiUrl } from '../config/api'
   
 const name = ref('PostsManagement')
@@ -154,7 +154,7 @@ async function getPosts() {
     const response = await axios.get(getApiUrl(API_ENDPOINTS.POSTS.GET_ALL));
     posts.value = response.data.data;
   } catch (error) {
-    console.error('获取文章列表失败:', error);
+    ElMessage.error('获取文章列表失败:' + error.message);
   }
 }
 /* 获取文章数量 */
@@ -171,7 +171,11 @@ async function getPostsCounts() {
 async function deletePost(id:number) {
   try {
     // 确认删除
-    const confirmDelete = confirm('确定删除这篇文章吗？');
+    const confirmDelete = await ElMessageBox.confirm(`确定删除这篇文章吗？ID: ${id}`, '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    });
     if (!confirmDelete) {
       return;
     }
