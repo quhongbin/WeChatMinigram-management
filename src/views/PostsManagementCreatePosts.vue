@@ -6,7 +6,7 @@
         <div class="flex items-center justify-between">
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">创建新文章</h3>
           <button 
-            @click="$emit('close')"
+            @click="handleClose"
             class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <i class="fas fa-times text-xl"></i>
@@ -103,7 +103,7 @@
           <div class="flex justify-end space-x-3 pt-4">
             <button
               type="button"
-              @click="$emit('close')"
+              @click="handleClose"
               class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               取消
@@ -134,7 +134,6 @@ import { ref, reactive } from 'vue'
 import axios from 'axios'
 import {ElMessage,ElMessageBox} from 'element-plus'
 
-import {ElMessage,ElMessageBox} from 'element-plus'
 
 
 // 定义事件
@@ -169,9 +168,7 @@ const handleFileUpload = (event: Event) => {
       ElMessageBox.alert(`Bad file postsuffix: ${file.name.split('.')[1]}`,'Error file',{
         confirmButtonText:'confirm',
       })
-      ElMessageBox.alert(`Bad file postsuffix: ${file.name.split('.')[1]}`,'Error file',{
-        confirmButtonText:'confirm',
-      })
+      
       target.value = ''
       return
     }
@@ -207,9 +204,7 @@ const handleSubmit = async () => {
     ElMessageBox.alert('请输入文章标题','Bad Input',{
       confirmButtonText:'confirm'
     })
-    ElMessageBox.alert('请输入文章标题','Bad Input',{
-      confirmButtonText:'confirm'
-    })
+    
     return
   }
   
@@ -217,9 +212,7 @@ const handleSubmit = async () => {
     ElMessageBox.alert('请选择要上传的 Markdown 文件','Bad Input',{
       confirmButtonText:'confirm'
     })
-    ElMessageBox.alert('请选择要上传的 Markdown 文件','Bad Input',{
-      confirmButtonText:'confirm'
-    })
+    
     return
   }
   
@@ -242,14 +235,13 @@ const handleSubmit = async () => {
     
     if (response.data.success) {
       ElMessage.success('文章创建成功！')
-      emit('success')
+      emit('postCreated')
       emit('close')
     }
     
   } catch (error) {
-    
-    ElMessage.error(`提交失败: ${error.message}`)
-
+    const errorMessage = error instanceof Error ? error.message : '未知错误'
+    ElMessage.error(`提交失败: ${errorMessage}`)
   } finally {
     isSubmitting.value = false
   }

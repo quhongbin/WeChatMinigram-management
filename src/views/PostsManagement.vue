@@ -154,7 +154,7 @@ async function getPosts() {
     const response = await axios.get(getApiUrl(API_ENDPOINTS.POSTS.GET_ALL));
     posts.value = response.data.data;
   } catch (error) {
-    ElMessage.error('获取文章列表失败:' + error.message);
+    ElMessage.error('获取文章列表失败:' + (error instanceof Error ? error.message : String(error)));
   }
 }
 /* 获取文章数量 */
@@ -163,7 +163,7 @@ async function getPostsCounts() {
     const response = await axios.get(getApiUrl(API_ENDPOINTS.POSTS.COUNT));
     postsCounts.value = response.data.data;
   } catch (error) {
-    console.error('获取文章数量失败:', error);
+    ElMessage.error('获取文章数量失败:' + (error instanceof Error ? error.message : String(error)));
   }
 }
 /* 通过id删除文章 */
