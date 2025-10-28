@@ -8,6 +8,7 @@ import PostsManagement from './views/PostsManagement.vue'
 import DataAnalysis from './views/DataAnalysis.vue'
 import MessageCenter from './views/MessageCenter.vue'
 import SystemSettings from './views/SystemSettings.vue'
+import Terminal from './views/Terminal.vue'
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     path: '/settings',
     name: 'SystemSettings',
     component: SystemSettings
+  },
+  {
+    path: '/terminal',
+    name: 'Terminal',
+    component: Terminal
   }
 ]
 
