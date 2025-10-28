@@ -64,6 +64,7 @@ export default {
       { id: 5, name: '数据分析', icon: 'fas fa-chart-bar', route: '/analytics' },
       { id: 6, name: '消息中心', icon: 'fas fa-comments', badge: 5, route: '/messages' },
       { id: 7, name: '系统设置', icon: 'fas fa-cog', route: '/settings' },
+      { id: 8, name: '终端', icon: 'fas fa-terminal', route: '/terminal' },
     ])
     
     // 根据当前路由设置活动菜单
