@@ -134,6 +134,8 @@ import { ref, reactive } from 'vue'
 import axios from 'axios'
 import {ElMessage,ElMessageBox} from 'element-plus'
 
+import {ElMessage,ElMessageBox} from 'element-plus'
+
 
 // 定义事件
 const emit = defineEmits<{
@@ -164,6 +166,9 @@ const handleFileUpload = (event: Event) => {
     
     // 检查文件类型
     if (!file.name.toLowerCase().endsWith('.md') && !file.name.toLowerCase().endsWith('.markdown')) {
+      ElMessageBox.alert(`Bad file postsuffix: ${file.name.split('.')[1]}`,'Error file',{
+        confirmButtonText:'confirm',
+      })
       ElMessageBox.alert(`Bad file postsuffix: ${file.name.split('.')[1]}`,'Error file',{
         confirmButtonText:'confirm',
       })
@@ -202,10 +207,16 @@ const handleSubmit = async () => {
     ElMessageBox.alert('请输入文章标题','Bad Input',{
       confirmButtonText:'confirm'
     })
+    ElMessageBox.alert('请输入文章标题','Bad Input',{
+      confirmButtonText:'confirm'
+    })
     return
   }
   
   if (!formData.file) {
+    ElMessageBox.alert('请选择要上传的 Markdown 文件','Bad Input',{
+      confirmButtonText:'confirm'
+    })
     ElMessageBox.alert('请选择要上传的 Markdown 文件','Bad Input',{
       confirmButtonText:'confirm'
     })
